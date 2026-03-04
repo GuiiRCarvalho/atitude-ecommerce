@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Produtos – Atitude Streetwear</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;800;900&display=swap"
+        rel="stylesheet">
+
+    <!-- Icons (Lucide) -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        :root {
+            --bg-color: #f8f8f8;
+            --text-main: #111111;
+            --text-muted: #666666;
+            --accent: #E53935;
+            /* Vermelho vibrante/streetwear */
+            --border-color: #e5e5e5;
+            --white: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-color);
+            color: var(--text-main);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* --- TOPBAR MARQUEE --- */
+        .topbar {
+            background: var(--text-main);
+            color: var(--white);
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            padding: 10px 0;
+            overflow: hidden;
+            white-space: nowrap;
+            position: relative;
+        }
+
+        .topbar-content {
+            display: inline-block;
+            animation: marquee 20s linear infinite;
+        }
+
+        .topbar-content span {
+            margin: 0 30px;
+        }
+
+        @keyframes marquee {
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+        /* --- HEADER & NAV --- */
+        header {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            transition: all 0.3s ease;
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 24px 60px;
+            max-width: 1440px;
+            margin: 0 auto;
+        }
+
+        .nav h1 {
+            font-weight: 900;
+            font-size: 28px;
+            letter-spacing: -1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .nav h1 a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .nav h1:hover {
+            transform: scale(1.02);
+        }
+
+        .nav ul {
+            display: flex;
+            gap: 40px;
+            list-style: none;
+        }
+
+        .nav a:not(h1 a) {
+            text-decoration: none;
+            color: var(--text-main);
+            font-weight: 500;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            position: relative;
+            padding-bottom: 4px;
+            transition: color 0.3s ease;
+        }
+
+        /* Animação do link do menu */
+        .nav a:not(h1 a)::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--text-main);
+            transition: width 0.3s ease;
+        }
+
+        .nav a:not(h1 a):hover::after {
+            width: 100%;
+        }
+
+        .nav a.highlight {
+            color: var(--accent);
+        }
+
+        .nav a.highlight::after {
+            background-color: var(--accent);
+        }
+
+        /* --- PRODUCTS HEADER --- */
+        .page-header {
+            padding: 60px 60px 40px;
+            max-width: 1440px;
+            margin: 0 auto;
+            text-align: center;
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        .page-header h2 {
+            font-size: clamp(2.5rem, 4vw, 3.5rem);
+            font-weight: 900;
+            letter-spacing: -1px;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+
+        .page-header p {
+            font-size: 16px;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* --- FILTERS (Simulated) --- */
+        .filters-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 60px 30px;
+            max-width: 1440px;
+            margin: 0 auto;
+            border-bottom: 1px solid var(--border-color);
+            animation: fadeIn 1s ease forwards 0.3s;
+            opacity: 0;
+        }
+
+        .filters-left {
+            display: flex;
+            gap: 20px;
+        }
+
+        .filter-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: none;
+            border: 1px solid var(--border-color);
+            padding: 10px 16px;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-main);
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .filter-btn:hover {
+            border-color: var(--text-main);
+        }
+
+        .filter-btn.active {
+            background: var(--text-main);
+            color: var(--white);
+            border-color: var(--text-main);
+        }
+
+        /* --- PRODUCTS GRID --- */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 40px;
+            padding: 40px 60px 80px;
+            max-width: 1440px;
+            margin: 0 auto;
+        }
+
+        .product-card {
+            display: flex;
+            flex-direction: column;
+            animation: fadeInUp 0.8s ease forwards;
+            opacity: 0;
+        }
+
+        /* Adicionando delays escalonados para a entrada dos cards */
+        .product-card:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .product-card:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .product-card:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        .product-card:nth-child(4) {
+            animation-delay: 0.4s;
+        }
+
+        .product-card:nth-child(5) {
+            animation-delay: 0.5s;
+        }
+
+        .product-card:nth-child(6) {
+            animation-delay: 0.6s;
+        }
+
+        .product-img-wrapper {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 3/4;
+            background: var(--white);
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.03);
+        }
+
+        .product-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .product-card:hover .product-img {
+            transform: scale(1.05);
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            background: var(--text-main);
+            color: var(--white);
+            font-size: 11px;
+            font-weight: 700;
+            padding: 6px 10px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            z-index: 2;
+        }
+
+        .product-badge.sale {
+            background: var(--accent);
+        }
+
+        .product-hover-action {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.6) 0%, transparent 100%);
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+            display: flex;
+            justify-content: center;
+            z-index: 2;
+        }
+
+        .product-card:hover .product-hover-action {
+            transform: translateY(0);
+        }
+
+        .btn-quick-add {
+            background: var(--white);
+            color: var(--text-main);
+            border: none;
+            padding: 12px 24px;
+            font-family: inherit;
+            font-weight: 600;
+            font-size: 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.2s;
+        }
+
+        .btn-quick-add:hover {
+            background: var(--text-main);
+            color: var(--white);
+        }
+
+        .product-info {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .product-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-main);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .product-title:hover {
+            color: var(--accent);
+        }
+
+        .product-price-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .product-price {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .product-price-old {
+            font-size: 14px;
+            color: var(--text-muted);
+            text-decoration: line-through;
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            background: var(--text-main);
+            color: #888;
+            padding: 40px 60px;
+            text-align: center;
+            font-size: 13px;
+            letter-spacing: 0.5px;
+            margin-top: auto;
+        }
+
+        footer span {
+            color: var(--white);
+            font-weight: 600;
+        }
+
+        /* --- ANIMATIONS --- */
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 1024px) {
+
+            .nav,
+            .page-header,
+            .filters-bar,
+            .products-grid {
+                padding-left: 40px;
+                padding-right: 40px;
+            }
+
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav {
+                flex-direction: column;
+                gap: 20px;
+                padding: 20px;
+            }
+
+            .nav ul {
+                gap: 20px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .page-header,
+            .filters-bar,
+            .products-grid {
+                padding-left: 20px;
+                padding-right: 20px;
+            }
+
+            .filters-bar {
+                flex-direction: column;
+                gap: 16px;
+                align-items: flex-start;
+            }
+
+            .filters-left {
+                width: 100%;
+                overflow-x: auto;
+                padding-bottom: 8px;
+            }
+
+            .products-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 16px;
+            }
+
+            .product-hover-action {
+                display: none;
+                /* Desabilita quick add no hover no mobile */
+            }
+        }
+
+        @media (max-width: 480px) {
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Topbar animada -->
+    <div class="topbar">
+        <div class="topbar-content">
+            <span>🔥 FRETE GRÁTIS PARA COMPRAS ACIMA DE R$249,90</span>
+            <span>•</span>
+            <span>MUDANDO A FORMA DE VER O MUNDO</span>
+            <span>•</span>
+            <span>NOVO DROP: OVERSIZED COLLECTION</span>
+            <span>•</span>
+            <span>🔥 FRETE GRÁTIS PARA COMPRAS ACIMA DE R$249,90</span>
+            <span>•</span>
+            <span>MUDANDO A FORMA DE VER O MUNDO</span>
+            <span>•</span>
+            <span>NOVO DROP: OVERSIZED COLLECTION</span>
+        </div>
+    </div>
+
+    <header>
+        <nav class="nav">
+            <h1><a href="index.html">ATITUDE</a></h1>
+            <ul>
+                <li><a href="#" class="highlight">Shop Todos</a></li>
+                <li><a href="#">Camisetas Oversized</a></li>
+                <li><a href="#">Calças Parachute</a></li>
+                <li><a href="#">Sale – Até 50% OFF</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="page-header">
+            <h2>NOSSOS PRODUTOS</h2>
+            <p>Peças premium projetadas para o uso diário. Conforto extremo, corte impecável e durabilidade que resiste
+                à selva de pedra.</p>
+        </div>
+
+        <div class="filters-bar">
+            <div class="filters-left">
+                <button class="filter-btn active">Todos</button>
+                <button class="filter-btn">Oversized</button>
+                <button class="filter-btn">Calças</button>
+                <button class="filter-btn">Moletons</button>
+            </div>
+            <div class="filters-right">
+                <button class="filter-btn">
+                    <i data-lucide="sliders-horizontal" style="width: 16px; height: 16px;"></i>
+                    Filtrar / Ordenar
+                </button>
+            </div>
+        </div>
+
+        <section class="products-grid">
+
+            <!-- Produto 1 -->
+            <article class="product-card">
+                <a href="#" class="product-img-wrapper">
+                    <div class="product-badge">Novo</div>
+                    <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=800&auto=format&fit=crop"
+                        alt="Camiseta Oversized Blank Branca" class="product-img">
+                    <div class="product-hover-action">
+                        <button class="btn-quick-add">Adicionar +</button>
+                    </div>
+                </a>
+                <div class="product-info">
+                    <a href="#" class="product-title">Camiseta Oversized Blank - Branca</a>
+                    <div class="product-price-row">
+                        <span class="product-price">R$ 149,90</span>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Produto 2 -->
+            <article class="product-card">
+                <a href="#" class="product-img-wrapper">
+                    <div class="product-badge sale">Sale</div>
+                    <img src="https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?q=80&w=800&auto=format&fit=crop"
+                        alt="Camiseta Classic Logo Preta" class="product-img">
+                    <div class="product-hover-action">
+                        <button class="btn-quick-add">Adicionar +</button>
+                    </div>
+                </a>
+                <div class="product-info">
+                    <a href="#" class="product-title">Camiseta Classic Logo - Preta</a>
+                    <div class="product-price-row">
+                        <span class="product-price">R$ 129,90</span>
+                        <span class="product-price-old">R$ 159,90</span>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Produto 3 -->
+            <article class="product-card">
+                <a href="#" class="product-img-wrapper">
+                    <img src="https://images.unsplash.com/photo-1556821840-3a63f95609a7?q=80&w=800&auto=format&fit=crop"
+                        alt="Moletom Hoodie Essential Cinza" class="product-img">
+                    <div class="product-hover-action">
+                        <button class="btn-quick-add">Adicionar +</button>
+                    </div>
+                </a>
+                <div class="product-info">
+                    <a href="#" class="product-title">Moletom Heavyweight Hoodie - Cinza</a>
+                    <div class="product-price-row">
+                        <span class="product-price">R$ 289,90</span>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Produto 4 -->
+            <article class="product-card">
+                <a href="#" class="product-img-wrapper">
+                    <div class="product-badge">Restock</div>
+                    <img src="https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?q=80&w=800&auto=format&fit=crop"
+                        alt="Calça Parachute Cargo Preta" class="product-img">
+                    <div class="product-hover-action">
+                        <button class="btn-quick-add">Adicionar +</button>
+                    </div>
+                </a>
+                <div class="product-info">
+                    <a href="#" class="product-title">Calça Parachute Cargo - Preta</a>
+                    <div class="product-price-row">
+                        <span class="product-price">R$ 319,90</span>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Produto 5 -->
+            <article class="product-card">
+                <a href="#" class="product-img-wrapper">
+                    <img src="https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?q=80&w=800&auto=format&fit=crop"
+                        alt="Camiseta Oversized Vintage Preta" class="product-img">
+                    <div class="product-hover-action">
+                        <button class="btn-quick-add">Adicionar +</button>
+                    </div>
+                </a>
+                <div class="product-info">
+                    <a href="#" class="product-title">Camiseta Oversized Washed - Chumbo</a>
+                    <div class="product-price-row">
+                        <span class="product-price">R$ 169,90</span>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Produto 6 -->
+            <article class="product-card">
+                <a href="#" class="product-img-wrapper">
+                    <div class="product-badge sale">Sale</div>
+                    <img src="https://images.unsplash.com/photo-1576566588028-4147f3842f27?q=80&w=800&auto=format&fit=crop"
+                        alt="Camiseta Estampa Gráfica Branca" class="product-img">
+                    <div class="product-hover-action">
+                        <button class="btn-quick-add">Adicionar +</button>
+                    </div>
+                </a>
+                <div class="product-info">
+                    <a href="#" class="product-title">Camiseta Graphic 'No Rules' - Branca</a>
+                    <div class="product-price-row">
+                        <span class="product-price">R$ 139,90</span>
+                        <span class="product-price-old">R$ 169,90</span>
+                    </div>
+                </div>
+            </article>
+
+        </section>
+    </main>
+
+    <footer>
+        © 2025 <span>ATITUDE</span> • Todos os direitos reservados. Feito para a rua.
+    </footer>
+
+    <!-- Inicializa os ícones Lucide -->
+    <script>
+        lucide.createIcons();
+    </script>
+
+</body>
+
+</html>
