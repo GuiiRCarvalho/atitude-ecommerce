@@ -32,8 +32,7 @@ export class AuthService {
 
     constructor(
         userRepository: IUserRepository,
-        passwordHasher: { hash: (password: string) => Promise<string>; compare: (password: string, hash: string) => Promise
-        <boolean> },
+        passwordHasher: { hash: (password: string) => Promise<string>; compare: (password: string, hash: string) => Promise<boolean> },
         tokenGenerator: { generate: (userId: string, email: string) => string }
     ) {
         this.registerUseCase = new RegisterUserUseCase(userRepository, passwordHasher, tokenGenerator);
