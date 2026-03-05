@@ -20,7 +20,7 @@ export class PaymentService {
                 user.id,
             );
             customerId = customer.id;
-            user.setStripeCustomerId(customerId);
+            user.setStripeCustomerId(customerId as string);
             await this.userRepository.save(user);
         }
 
