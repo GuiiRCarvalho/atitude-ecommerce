@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 
 export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
 import { PrismaUserRepository } from '../../../../src/infrastructure/database/PrismaUserRepository';
 import { LoginUserUseCase } from '../../../../src/domain/usecases/LoginUserUseCase';
 import { bcryptPasswordHasher } from '../../../../src/infrastructure/providers/PasswordHasher';
