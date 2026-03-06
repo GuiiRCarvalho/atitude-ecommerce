@@ -7,8 +7,55 @@ import Image from 'next/image';
 
 export default function CartDrawer() {
     const { cart, isCartOpen, toggleCart, removeFromCart, updateQuantity, cartTotal } = useCart();
+    const [isCheckingOut, setIsCheckingOut] = React.useState(false);
 
     if (!isCartOpen) return null;
+
+    const handleCheckout = async () => {
+        const token = localStorage.getItem('atitude67_token');
+        if (!token) {
+            alert('Você precisa estar logado para finalizar a compra.');
+            window.location.href = '/login';
+            return;
+        }
+
+        if (cart.length === 0) return;
+
+        setIsCheckingOut(true);
+        try {
+            const response = await fetch('/api/payments/checkout', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    items: cart.map(item => ({
+                        id: item.id,
+                        price: item.price,
+                        quantity: item.quantity,
+                        title: item.title,
+                        imageUrl: item.imageUrl
+                    }))
+                })
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.message || data.error || 'Erro ao iniciar checkout');
+            }
+
+            if (data.url) {
+                window.location.href = data.url; // Redirect to Stripe
+            } else {
+                throw new Error('URL de pagamento não retornada');
+            }
+        } catch (err: any) {
+            alert(`Erro no checkout: ${err.message}`);
+            setIsCheckingOut(false);
+        }
+    };
 
     return (
         <>
@@ -78,12 +125,18 @@ export default function CartDrawer() {
                         <span>Total</span>
                         <span>R$ {cartTotal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                     </div>
-                    <button style={{
-                        width: '100%', padding: '16px', backgroundColor: '#111', color: '#fff',
-                        border: 'none', borderRadius: '8px', fontWeight: 700, fontSize: '16px',
-                        cursor: 'pointer'
-                    }}>
-                        FINALIZAR COMPRA
+                    <button
+                        onClick={handleCheckout}
+                        disabled={isCheckingOut || cart.length === 0}
+                        style={{
+                            width: '100%', padding: '16px',
+                            backgroundColor: isCheckingOut || cart.length === 0 ? '#666' : '#111',
+                            color: '#fff',
+                            border: 'none', borderRadius: '8px', fontWeight: 700, fontSize: '16px',
+                            cursor: isCheckingOut || cart.length === 0 ? 'not-allowed' : 'pointer',
+                            transition: 'background 0.2s'
+                        }}>
+                        {isCheckingOut ? 'PROCESSANDO...' : 'FINALIZAR COMPRA'}
                     </button>
                 </div>
             </div>
