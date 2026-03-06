@@ -37,8 +37,9 @@ export default function LoginPage() {
       // Save token to localStorage (can also be saved to cookies/context)
       localStorage.setItem('atitude67_token', data.token);
 
-      // Redirect to home
-      router.push('/');
+      // Force a full hardware reload to the profile page so the global Header 
+      // recognizes the change in localStorage instantly.
+      window.location.href = '/perfil';
     } catch (err: any) {
       setError(err.message);
     } finally {
