@@ -8,6 +8,7 @@ export class StripeProvider {
         }
         return new Stripe(key, {
             apiVersion: '2024-04-10' as any, // Using as any since runtime stripe allows multiple versions but the types are rigid for the latest.
+            httpClient: Stripe.createFetchHttpClient(), // Force fetch API instead of legacy Node http module to fix Vercel timeouts
         });
     }
 
