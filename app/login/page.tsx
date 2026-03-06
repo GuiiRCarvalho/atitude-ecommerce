@@ -23,10 +23,15 @@ export default function LoginPage() {
         body: JSON.stringify(formData),
       });
 
-      const data = await response.json();
+      let data;
+      try {
+        data = await response.json();
+      } catch (e) {
+        throw new Error('Erro no servidor interno (500). Verifique a URL da API da Vercel.');
+      }
 
       if (!response.ok) {
-        throw new Error(data.error || data.message || 'E-mail ou senha incorretos');
+        throw new Error(data?.error || data?.message || 'E-mail ou senha incorretos');
       }
 
       // Save token to localStorage (can also be saved to cookies/context)
