@@ -35,6 +35,10 @@ export async function POST(req: Request) {
 
         return NextResponse.json({ url: session.url });
     } catch (error: any) {
-        return NextResponse.json({ message: error.message || 'Internal Server Error' }, { status: 500 });
+        console.error('Stripe Checkout Failed:', error);
+        return NextResponse.json(
+            { message: error.message || String(error) || 'Internal Server Error', stack: error.stack },
+            { status: 500 }
+        );
     }
 }
