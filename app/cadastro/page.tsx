@@ -23,11 +23,12 @@ export default function RegisterPage() {
         body: JSON.stringify(formData),
       });
 
+      const responseText = await response.text();
       let data;
       try {
-        data = await response.json();
+        data = responseText ? JSON.parse(responseText) : {};
       } catch (e) {
-        throw new Error('Erro no servidor interno (500). Verifique a URL da API da Vercel.');
+        throw new Error(`Erro do servidor (não JSON). Status: ${response.status}`);
       }
 
       if (!response.ok) {
