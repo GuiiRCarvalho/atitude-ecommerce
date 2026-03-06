@@ -2,7 +2,11 @@ import Stripe from 'stripe';
 
 export class StripeProvider {
     private get stripe() {
-        return new Stripe(process.env.STRIPE_SECRET_KEY || 'sk_test_mock_for_build', {
+        const key = process.env.STRIPE_SECRET_KEY;
+        if (!key || key === 'sk_test_your_stripe_secret_key' || key === 'sk_test_mock_for_build') {
+            throw new Error(`A chave secreta do Stripe (STRIPE_SECRET_KEY) não foi configurada corretamente nas Environment Variables da Vercel. Atual: ${key}`);
+        }
+        return new Stripe(key, {
             apiVersion: '2024-04-10' as any, // Using as any since runtime stripe allows multiple versions but the types are rigid for the latest.
         });
     }

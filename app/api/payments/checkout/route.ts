@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 
 export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
 import { PaymentService } from '../../../../src/application/services/PaymentService';
 import { PrismaUserRepository } from '../../../../src/infrastructure/database/PrismaUserRepository';
 import { StripeProvider } from '../../../../src/infrastructure/providers/StripeProvider';
