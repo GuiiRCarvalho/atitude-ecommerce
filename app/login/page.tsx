@@ -9,6 +9,7 @@ export default function LoginPage() {
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [keepMeLoggedIn, setKeepMeLoggedIn] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -34,8 +35,14 @@ export default function LoginPage() {
         throw new Error(data?.error || data?.message || 'E-mail ou senha incorretos');
       }
 
-      // Save token to localStorage (can also be saved to cookies/context)
-      localStorage.setItem('atitude67_token', data.token);
+      // Save token to localStorage (persistent) or sessionStorage (cleared on tab close)
+      if (keepMeLoggedIn) {
+        localStorage.setItem('atitude67_token', data.token);
+        sessionStorage.removeItem('atitude67_token'); // Clear from session if it exists
+      } else {
+        sessionStorage.setItem('atitude67_token', data.token);
+        localStorage.removeItem('atitude67_token'); // Clear from local if it exists
+      }
 
       // Force a full hardware reload to the profile page so the global Header 
       // recognizes the change in localStorage instantly.
@@ -72,7 +79,18 @@ export default function LoginPage() {
           <div className="input-group">
             <label htmlFor="password">Senha</label>
             <input type="password" id="password" placeholder="••••••••" value={formData.password} onChange={handleChange} required />
-            <Link href="#" className="forgot-password">Esqueceu a senha?</Link>
+            <div className="password-options">
+              <label className="checkbox-container">
+                <input
+                  type="checkbox"
+                  checked={keepMeLoggedIn}
+                  onChange={(e) => setKeepMeLoggedIn(e.target.checked)}
+                />
+                <span className="checkmark"></span>
+                Mantenha-me conectado
+              </label>
+              <Link href="#" className="forgot-password">Esqueceu a senha?</Link>
+            </div>
           </div>
 
           <button type="submit" className="auth-button" disabled={loading}>
@@ -189,6 +207,36 @@ export default function LoginPage() {
           margin-bottom: 24px;
           text-align: center;
           border: 1px solid #ffcdd2;
+        }
+
+        .password-options {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-top: 4px;
+        }
+
+        .checkbox-container {
+          display: flex !important;
+          align-items: center;
+          gap: 8px;
+          cursor: pointer;
+          font-size: 13px !important;
+          font-weight: 500 !important;
+          color: var(--text-muted) !important;
+          user-select: none;
+        }
+
+        .checkbox-container:hover {
+          color: var(--text-main) !important;
+        }
+
+        .checkbox-container input {
+          margin: 0;
+          cursor: pointer;
+          width: 14px;
+          height: 14px;
+          accent-color: var(--text-main);
         }
 
         .forgot-password {
