@@ -1,10 +1,12 @@
 import Stripe from 'stripe';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
-    apiVersion: '2023-10-16',
-});
-
 export class StripeProvider {
+    private get stripe() {
+        return new Stripe(process.env.STRIPE_SECRET_KEY || 'sk_test_mock_for_build', {
+            apiVersion: '2024-04-10' as any, // Using as any since runtime stripe allows multiple versions but the types are rigid for the latest.
+        });
+    }
+
     async createCheckoutSession(
         customerId: string,
         lineItems: Stripe.Checkout.SessionCreateParams.LineItem[],
@@ -12,7 +14,7 @@ export class StripeProvider {
         cancelUrl: string,
         userId: string,
     ) {
-        return stripe.checkout.sessions.create({
+        return this.stripe.checkout.sessions.create({
             mode: 'payment',
             payment_method_types: ['card'],
             line_items: lineItems,
@@ -24,7 +26,7 @@ export class StripeProvider {
     }
 
     async createCustomer(email: string, name?: string | null, userId?: string) {
-        return stripe.customers.create({
+        return this.stripe.customers.create({
             email,
             name: name ?? undefined,
             metadata: userId ? { userId } : undefined,
@@ -32,7 +34,7 @@ export class StripeProvider {
     }
 
     async createPortalSession(customerId: string, returnUrl: string) {
-        return stripe.billingPortal.sessions.create({
+        return this.stripe.billingPortal.sessions.create({
             customer: customerId,
             return_url: returnUrl,
         });
@@ -40,6 +42,6 @@ export class StripeProvider {
 
     constructEvent(rawBody: string | Buffer, signature: string) {
         const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET || '';
-        return stripe.webhooks.constructEvent(rawBody, signature, webhookSecret);
+        return this.stripe.webhooks.constructEvent(rawBody, signature, webhookSecret);
     }
 }
