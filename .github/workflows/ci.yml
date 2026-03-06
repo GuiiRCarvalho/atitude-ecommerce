@@ -18,12 +18,13 @@ jobs:
         with:
           node-version: '20'
           cache: 'npm'
-          cache-dependency-path: atitude-ecommerce/package-lock.json
+          cache-dependency-path: package-lock.json
 
-      - name: Install backend dependencies
-        working-directory: ./atitude-ecommerce
+      - name: Install dependencies
         run: npm ci
 
-      - name: Run backend build
-        working-directory: ./atitude-ecommerce
+      - name: Generate Prisma Client
+        run: npx prisma generate
+
+      - name: Run Next.js build
         run: npm run build
