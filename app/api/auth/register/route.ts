@@ -1,4 +1,6 @@
 import { NextResponse } from 'next/server';
+
+export const dynamic = 'force-dynamic';
 import { PrismaUserRepository } from '../../../../src/infrastructure/database/PrismaUserRepository';
 import { RegisterUserUseCase } from '../../../../src/domain/usecases/RegisterUserUseCase';
 import { bcryptPasswordHasher } from '../../../../src/infrastructure/providers/PasswordHasher';
