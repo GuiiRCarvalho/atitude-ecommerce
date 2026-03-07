@@ -16,9 +16,11 @@ export async function POST(req: Request) {
         const loginUseCase = new LoginUserUseCase(userRepository, bcryptPasswordHasher, jwtTokenGenerator);
 
         const result = await loginUseCase.execute({ email, password });
+        console.log("Login user usecase success:", result);
 
         return NextResponse.json(result, { status: 200 });
     } catch (error: any) {
+        console.error("Login route error:", error);
         return NextResponse.json({ message: error.message || 'Internal Server Error' }, { status: 400 });
     }
 }

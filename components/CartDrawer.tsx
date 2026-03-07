@@ -12,7 +12,7 @@ export default function CartDrawer() {
     if (!isCartOpen) return null;
 
     const handleCheckout = async () => {
-        const token = localStorage.getItem('atitude67_token');
+        const token = localStorage.getItem('atitude67_token') || sessionStorage.getItem('atitude67_token');
         if (!token) {
             alert('Você precisa estar logado para finalizar a compra.');
             window.location.href = '/login';
