@@ -10,7 +10,7 @@ export default function Header() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     useEffect(() => {
-        const token = localStorage.getItem('atitude67_token');
+        const token = localStorage.getItem('atitude67_token') || sessionStorage.getItem('atitude67_token');
         if (token) {
             setIsLoggedIn(true);
         }

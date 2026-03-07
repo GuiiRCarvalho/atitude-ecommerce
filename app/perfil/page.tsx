@@ -6,89 +6,90 @@ import { Package, User } from 'lucide-react';
 
 // Mock data to simulate orders
 const MOCK_ORDERS = [
-    { id: 'ORD-7A9B2', date: '04 Mar 2026', total: 'R$ 299,90', status: 'Entregue', items: 2 },
-    { id: 'ORD-3X5L1', date: '21 Fev 2026', total: 'R$ 145,00', status: 'A Caminho', items: 1 }
+  { id: 'ORD-7A9B2', date: '04 Mar 2026', total: 'R$ 299,90', status: 'Entregue', items: 2 },
+  { id: 'ORD-3X5L1', date: '21 Fev 2026', total: 'R$ 145,00', status: 'A Caminho', items: 1 }
 ];
 
 export default function PerfilPage() {
-    const router = useRouter();
-    const [tokenInfo, setTokenInfo] = useState<string | null>(null);
+  const router = useRouter();
+  const [tokenInfo, setTokenInfo] = useState<string | null>(null);
 
-    useEffect(() => {
-        // Check if user is logged in
-        const token = localStorage.getItem('atitude67_token');
-        if (!token) {
-            router.push('/login');
-        } else {
-            setTokenInfo(token);
-        }
-    }, [router]);
+  useEffect(() => {
+    // Check if user is logged in
+    const token = localStorage.getItem('atitude67_token') || sessionStorage.getItem('atitude67_token');
+    if (!token) {
+      router.push('/login');
+    } else {
+      setTokenInfo(token);
+    }
+  }, [router]);
 
-    const handleLogout = () => {
-        localStorage.removeItem('atitude67_token');
-        router.push('/login');
-    };
+  const handleLogout = () => {
+    localStorage.removeItem('atitude67_token');
+    sessionStorage.removeItem('atitude67_token');
+    router.push('/login');
+  };
 
-    if (!tokenInfo) return null; // loading state
+  if (!tokenInfo) return null; // loading state
 
-    return (
-        <div className="profile-wrapper">
-            <div className="profile-grid">
+  return (
+    <div className="profile-wrapper">
+      <div className="profile-grid">
 
-                {/* SIDEBAR / PERFIL */}
-                <div className="profile-sidebar">
-                    <div className="sidebar-header">
-                        <User size={40} className="avatar-icon" />
-                        <div className="sidebar-info">
-                            <h2>MEU PERFIL</h2>
-                            <p>Conectado</p>
-                        </div>
-                    </div>
-
-                    <div className="profile-actions">
-                        <button onClick={handleLogout} className="logout-button">SAIR DA CONTA</button>
-                    </div>
-                </div>
-
-                {/* CONTENT / HISTORICO DE PEDIDOS */}
-                <div className="profile-content">
-                    <div className="content-header">
-                        <Package size={24} />
-                        <h2>MEUS PEDIDOS</h2>
-                    </div>
-
-                    <div className="orders-list">
-                        {MOCK_ORDERS.length > 0 ? (
-                            MOCK_ORDERS.map(order => (
-                                <div key={order.id} className="order-card">
-                                    <div className="order-main">
-                                        <span className="order-id">#{order.id}</span>
-                                        <span className={`order-status ${order.status === 'Entregue' ? 'status-delivered' : 'status-pending'}`}>
-                                            {order.status}
-                                        </span>
-                                    </div>
-                                    <div className="order-details">
-                                        <span>{order.date}</span>
-                                        <span>•</span>
-                                        <span>{order.items} iten(s)</span>
-                                        <span>•</span>
-                                        <span className="order-total">{order.total}</span>
-                                    </div>
-                                </div>
-                            ))
-                        ) : (
-                            <div className="empty-state">
-                                <p>Você ainda não fez nenhum pedido.</p>
-                                <button onClick={() => router.push('/produtos')} className="shop-button">VER PRODUTOS</button>
-                            </div>
-                        )}
-                    </div>
-                </div>
-
+        {/* SIDEBAR / PERFIL */}
+        <div className="profile-sidebar">
+          <div className="sidebar-header">
+            <User size={40} className="avatar-icon" />
+            <div className="sidebar-info">
+              <h2>MEU PERFIL</h2>
+              <p>Conectado</p>
             </div>
+          </div>
 
-            <style dangerouslySetInnerHTML={{
-                __html: `
+          <div className="profile-actions">
+            <button onClick={handleLogout} className="logout-button">SAIR DA CONTA</button>
+          </div>
+        </div>
+
+        {/* CONTENT / HISTORICO DE PEDIDOS */}
+        <div className="profile-content">
+          <div className="content-header">
+            <Package size={24} />
+            <h2>MEUS PEDIDOS</h2>
+          </div>
+
+          <div className="orders-list">
+            {MOCK_ORDERS.length > 0 ? (
+              MOCK_ORDERS.map(order => (
+                <div key={order.id} className="order-card">
+                  <div className="order-main">
+                    <span className="order-id">#{order.id}</span>
+                    <span className={`order-status ${order.status === 'Entregue' ? 'status-delivered' : 'status-pending'}`}>
+                      {order.status}
+                    </span>
+                  </div>
+                  <div className="order-details">
+                    <span>{order.date}</span>
+                    <span>•</span>
+                    <span>{order.items} iten(s)</span>
+                    <span>•</span>
+                    <span className="order-total">{order.total}</span>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <div className="empty-state">
+                <p>Você ainda não fez nenhum pedido.</p>
+                <button onClick={() => router.push('/produtos')} className="shop-button">VER PRODUTOS</button>
+              </div>
+            )}
+          </div>
+        </div>
+
+      </div>
+
+      <style dangerouslySetInnerHTML={{
+        __html: `
         .profile-wrapper {
           min-height: calc(100vh - 160px);
           background: var(--bg-color);
@@ -276,6 +277,6 @@ export default function PerfilPage() {
           }
         }
       `}} />
-        </div>
-    );
+    </div>
+  );
 }
