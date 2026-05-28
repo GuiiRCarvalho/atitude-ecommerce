@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Atitude 67 – Streetwear</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: #fff; color: #111; }
+    header { border-bottom: 1px solid #eee; }
+    .topbar { background: #000; color: #fff; font-size: 13px; padding: 8px; text-align: center; }
+    .nav { display: flex; justify-content: space-between; align-items: center; padding: 20px 60px; }
+    .nav h1 { font-weight: 800; letter-spacing: 2px; }
+    .nav ul { display: flex; gap: 30px; list-style: none; }
+    .nav a { text-decoration: none; color: #111; font-weight: 500; }
+    .nav a.highlight { color: red; }
+
+    .hero { display: grid; grid-template-columns: 1fr 1fr; align-items: center; min-height: 80vh; padding: 60px; gap: 40px; }
+    .hero-text h2 { font-size: 48px; font-weight: 800; margin-bottom: 20px; }
+    .hero-text p { font-size: 18px; margin-bottom: 10px; }
+    .price { font-size: 22px; font-weight: 700; margin: 20px 0; }
+    .btn { display: inline-block; padding: 14px 32px; background: #000; color: #fff; text-decoration: none; font-weight: 600; }
+
+    .hero-img { background: #ddd; height: 100%; display: flex; align-items: center; justify-content: center; font-weight: 600; }
+
+    .benefits { display: grid; grid-template-columns: repeat(4, 1fr); padding: 40px 60px; border-top: 1px solid #eee; gap: 20px; text-align: center; font-size: 14px; }
+    .benefit { display: flex; flex-direction: column; gap: 10px; }
+
+    footer { background: #000; color: #fff; padding: 40px; text-align: center; font-size: 14px; }
+
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; }
+      .nav { flex-direction: column; gap: 20px; }
+      .benefits { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="topbar">FRETE GRÁTIS PARA COMPRAS ACIMA DE R$249,90 • FRETE FIXO R$9,90 SUL E SUDESTE</div>
+  <nav class="nav">
+    <h1>ATITUDE 67</h1>
+    <ul>
+      <li><a href="#">Vestuário</a></li>
+      <li><a href="#">Camisetas Oversized</a></li>
+      <li><a href="#" class="highlight">Promoções</a></li>
+    </ul>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="hero-text">
+    <h2>Camisetas Oversized</h2>
+    <p>Streetwear premium inspirado na cultura urbana.</p>
+    <p class="price">R$179,90 • 2 por R$299,90</p>
+    <a href="#" class="btn">Ver Mais</a>
+  </div>
+  <div class="hero-img">Imagem do Produto</div>
+</section>
+
+<section class="benefits">
+  <div class="benefit">🚚<strong>Frete Grátis</strong><span>Acima de R$249,90</span></div>
+  <div class="benefit">💸<strong>10% OFF</strong><span>Na primeira compra</span></div>
+  <div class="benefit">💰<strong>Cashback</strong><span>5% na próxima compra</span></div>
+  <div class="benefit">💳<strong>Parcelamento</strong><span>Até 3x sem juros</span></div>
+</section>
+
+<footer>
+  © 2025 ATITUDE • Todos os direitos reservados
+</footer>
+
+</body>
+</html>
